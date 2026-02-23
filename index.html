@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TOP</title>
-    <link rel="icon" type="image/png" href="/img/imags/icon.png">
+    <link rel="icon" type="image/png" href="/img/images/icon.png">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
     <script src="js/script.js" defer></script>
@@ -428,7 +428,7 @@
                 grid-template-columns: 1.5fr 1fr;
                 padding-top: 15%;
                 /* no-repeat显示的图片不会重复，50% 360px设置位置， */
-                background: url(../img/imags/top-main-bg3.png)no-repeat 50% 100%;
+                background: url(../img/images/top-main-bg3.png)no-repeat 50% 100%;
             }
 
             .main-s2 .main-s2-d1 {
@@ -543,7 +543,7 @@
                     "img p2";
                 grid-template-columns: 1fr 1fr;
                 margin-right: 15%;
-                background: url(img/imags/top-main-bg1.png)no-repeat 100% 0%;
+                background: url(img/images/top-main-bg1.png)no-repeat 100% 0%;
                 background-size: 60%;
                 margin: 0 auto;
             }
@@ -712,7 +712,7 @@
 <body>
     <header id="mainHeader">
         <div class="nav">
-            <div class="LOGO"><a href="index.html"><img src="img/imags/LOGO.png" alt=""></a></div>
+            <div class="LOGO"><a href="index.html"><img src="img/images/LOGO.png" alt=""></a></div>
             <!-- 汉堡按钮 -->
             <div class="hamburger" id="hamburger">
                 <span></span>
@@ -730,7 +730,7 @@
         <!-- 背景遮罩层 -->
         <div class="menu-overlay" id="menuOverlay"></div>
 
-        <h1><img src="img/imags/h1-1.png" alt=""></h1>
+        <h1><img src="img/images/h1-1.png" alt=""></h1>
         <p class="had-message">―公式サイトにない学生の声を読めば、きっとイメージしやすくなる！―</p>
         <div class="gallery-container" id="galleryContainer"></div>
     </header>
@@ -745,8 +745,8 @@
                 </p>
             </div>
             <div class="main-s1-d2">
-                <img class="fade-in-img" src="img/imags/img-renwu.png" alt="人物">
-                <img class="fade-in-txt" src="img/imags/img-wenzi.png" alt="文字">
+                <img class="fade-in-img" src="img/images/img-renwu.png" alt="人物">
+                <img class="fade-in-txt" src="img/images/img-wenzi.png" alt="文字">
             </div>
             <a class="interview-link" href="student-interview/index.html">もっと見る</a>
         </section>
@@ -809,7 +809,7 @@
                 </a>
 
                 <a href="#" class="scroll-to-top">
-                    <img class="web" src="img/imags/top-main-bg2.png" alt="">
+                    <img class="web" src="img/images/top-main-bg2.png" alt="">
                     <h4>TOPに戻る</h4>
                 </a>
             </div>
@@ -817,7 +817,7 @@
 
         <section class="footer-bot">
             <div class="footer-bot-d1">
-                <img src="img/imags/top-footer-bg.png" alt="">
+                <img src="img/images/top-footer-bg.png" alt="">
                 <h3>その第一歩</h3>
                 <p>もしWebデザイン学科に興味があれば、ぜひ学校の公式サイト
                     もチェックしてみてください。
@@ -861,9 +861,14 @@
         function initGallery() {
             stopImageChangeInterval();
             const shuffled = shuffle([...imageUrls]);
-            preloadImages(shuffled).then(() => {
-                createGallery(shuffled);
-            }).catch(err => console.error("图片预加载失败:", err));
+
+            preloadImages(shuffled)
+                .then(() => {
+                    createGallery(shuffled);
+                })
+                .catch((failedUrl) => {
+                    console.error("图片预加载失败（请检查路径/大小写）:", failedUrl);
+                });
         }
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -915,7 +920,7 @@
         // 画廊数据与生成逻辑
         // =====================================================
         const container = document.getElementById('galleryContainer');
-        const imageUrls = Array.from({ length: 36 }, (_, i) => `img/${i + 1}.JPG`);
+        const imageUrls = Array.from({ length: 40 }, (_, i) => `img/${i + 1}.JPG`);
 
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -930,12 +935,15 @@
                 return new Promise((resolve, reject) => {
                     const img = new Image();
                     img.onload = resolve;
-                    img.onerror = reject;
+                    img.onerror = () => {
+                        // 打印出报错的完整绝对路径，方便比对
+                        console.error("无法加载图片，尝试路径为:", img.src);
+                        reject(src);
+                    };
                     img.src = src;
                 });
             }));
         }
-
         // 动态生成图片画廊（滚动区域）
         function createGallery(preloadedImages = imageUrls) {
             container.innerHTML = "";
