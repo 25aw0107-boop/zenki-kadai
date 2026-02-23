@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生の日常</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/script.js" defer></script>
+</head>
+<style>
+    @media (min-width: 768px) {
+        header {
+            /* 解决方法一：给 header 添加 overflow: hidden */
+            overflow: hidden;
+            background: #6678AF;
+        }
+
+        /* ========================
+               轮播图
+        ========================= */
+
+
+        .carousel-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            height: 500px;
+        }
+
+        .carousel-track {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(100%);
+            transition: transform 0.6s ease, opacity 0.6s ease;
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 2;
+            transform: translateX(0);
+        }
+
+        .carousel-slide.to-left {
+            transform: translateX(-100%);
+        }
+
+        .carousel-slide.to-right {
+            transform: translateX(100%);
+        }
+
+        .carousel-image {
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .carousel-image.left,
+        .carousel-image.right {
+            width: 10%;
+            opacity: 0.8;
+        }
+
+        .carousel-image.center {
+            width: 80%;
+            z-index: 2;
+        }
+
+        .carousel-slide .carousel-image.left,
+        .carousel-slide .carousel-image.right {
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .carousel-slide.active .carousel-image.left,
+        .carousel-slide.active .carousel-image.right {
+            opacity: 0.8;
+        }
+
+        /* ========================
+            header其他
+        ========================= */
+        header .ttl {
+            width: 100%;
+            background: url(../img/imags/h1-bg.png)no-repeat 80% 0%;
+            background-size: 20%;
+        }
+
+        header .ttl img {
+            width: 55%;
+            margin: 3% auto;
+        }
+
+
+
+        /*-------main1--------*/
+        .main-s1 {
+            padding: 10% 0;
+            display: grid;
+            grid-template-areas:
+                "h3 h3"
+                "txt1 img"
+                "txt2 txt2";
+            grid-template-columns: 1fr 1.5fr;
+            margin: auto;
+            gap: 10px;
+
+            min-width: 450px;
+            width: 45%;
+            margin: 0 auto;
+            background: url(../img/imags/top-main-bg3.png)no-repeat 50% 30%;
+            background-size: 90%;
+        }
+
+
+        .main-s1 .p1 {
+            grid-area: txt1;
+        }
+
+        .main-s1 .p2 {
+            grid-area: txt2;
+        }
+
+        .main-s1 .img {
+            grid-area: img;
+            min-width: 200px;
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto;
+            margin-top: -8%;
+        }
+
+        .main-s1 h3 {
+            grid-area: h3;
+        }
+
+        .img-stack {
+            position: relative;
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        .img-stack img {
+            position: absolute;
+            transition: transform 0.3s ease, z-index 0.3s ease;
+            /* border-radius: 10px; */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }
+
+        /* 第一张图：靠上 */
+        .img-stack img:first-child {
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        /* 第二张图：稍微往右下角偏移 */
+        .img-stack img:last-child {
+            top: 15%;
+            left: 15%;
+            z-index: 0;
+        }
+
+        /* 鼠标悬停时：放大并置于最上层 */
+        .img-stack img:hover {
+            transform: scale(1.05);
+            z-index: 2;
+        }
+
+
+        /* -----------main2----------- */
+        .main-s2 {
+            display: grid;
+            grid-template-areas:
+                "img txt";
+            grid-template-columns: 1fr 1fr;
+            gap: 5%;
+
+            margin: 0 auto;
+            width: 50%;
+            min-width: 500px;
+        }
+
+        .main-s2 .main-s2-d1 {
+            grid-area: img;
+
+            /* ---使div中的图片居中---- */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main-s2 .main-s2-d2 {
+            grid-area: txt;
+            /* display: flex; */
+        }
+
+        .main-s2 .main-s2-d2 .big {
+            font-size: clamp(24px, 2vw, 36px);
+            font-weight: 900;
+            color: #4D4C4C;
+        }
+
+        /* ------main3------ */
+        .main-s3 {
+            padding-top: 10%;
+            margin: 0 auto;
+            width: 50%;
+            min-width: 500px;
+        }
+
+        .main-s3 h3 {
+            text-align: center;
+        }
+
+        .main-s3 div {
+            height: 250px;
+            width: 100%;
+            background: url(../img/life/s3.png)no-repeat 50% 50%;
+            background-size: 100%;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+    }
+
+
+    /* ================================
+            手机端（≤768px）样式
+    ================================ */
+
+
+    @media (max-width: 768px) {
+
+        /* 手机端不需要的元素 */
+        .carousel-container,
+        header .ttl,
+        .main-s2-d2 .big {
+            display: none;
+        }
+
+        main {
+            padding: 16px;
+        }
+
+        main section {
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 28px;
+            box-shadow: 0px 0px 9px #aeaeae;
+
+        }
+
+        section h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 14px;
+            text-align: center;
+            color: #222;
+        }
+
+        section p {
+            font-size: 15px;
+            line-height: 2;
+            margin-bottom: 12px;
+            color: #444;
+            text-align: left;
+            /* 如果需要居中，改成 center */
+        }
+
+        /* 通用图片容器：横向居中 */
+        .img-stack {
+            display: flex;
+            justify-content: center;
+            margin: 14px 0;
+        }
+
+        /* 图片默认宽度自适应，带圆角 */
+        .img-stack img {
+            max-width: 50%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .main-s2-d1 img {
+            margin: auto;
+            margin-bottom: 5%;
+            width: 80%;
+        }
+
+
+    }
+</style>
+
+<body>
+    <header id="mainHeader">
+        <div class="nav">
+            <h1 class="LOGO"><a href="../index.html"><img src="../img/imags/LOGO.png" alt=""></a></h1>
+            <!-- 汉堡按钮 -->
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <ul id="navMenu">
+                <li><a href="../index.html">トップ<br><span>TOP</span></a></li>
+                <li><a href="../student-life/index.html">学生の日常<br><span>Student's daily life</span></a></li>
+                <li><a href="../student-interview/index.html">先輩インタビュー<br><span>Senior Interview</span></a></li>
+                <li><a href="../student-growth/index.html">学生の育成<br><span>Student Development</span></a></li>
+            </ul>
+        </div>
+        <!-- 背景遮罩层 -->
+        <div class="menu-overlay" id="menuOverlay"></div>
+
+        <div class="ttl fade-toggle">
+            <img src="../img/imags/h1-2.png" alt="">
+        </div>
+        <!-- 轮播图 -->
+        <div class="carousel-container">
+            <div class="carousel-track" id="carousel-track"></div>
+        </div>
+    </header>
+
+    <main>
+        <section class="main-s1 fade-toggle">
+            <h3>Webデザイン科では</h3>
+            <div class="img img-stack">
+                <img src="../img/life/s2-1.JPG" alt="">
+                <img src="../img/life/s2-2.JPG" alt="">
+            </div>
+            <p class="p1">伝統的なIT学科のイメージとは少し異なり、ITの技術力だけでなく、
+                人とのつながりやコミュニケーションも非常に大切にしています。
+                そのため、入学直後から学生同士が気軽に交流できる工夫がされています。</p>
+            <p class="p2">入学してすぐに、クラスメイトや先輩たちとミニゲームなどを通じて打ち
+                解けられる時間が設けられており、知識やスキルの習得だけでなく、
+                「人との関係づくり」も重視するのが私たちのスタイルです。</p>
+        </section>
+
+        <section class="main-s2 fade-toggle">
+            <div class="main-s2-d1">
+                <img src="../img/imags/2-main2.png" alt="">
+            </div>
+            <div class="main-s2-d2">
+                <p class="big">実際に</p>
+                <p>授業が始まってから、最初の大課題も一人でやるのではなく、
+                    担当の二年生の先輩にサポートしてもらいながら進める形式でした。
+                    分からないことがあればすぐに相談できる環境だったので、
+                    不安を感じることなく課題に取り組むことができました。</p>
+            </div>
+        </section>
+
+        <section class="main-s3 fade-toggle">
+            <h3>専門的なスキルだけでなく</h3>
+            <p>日本の文化や人との関わりにも自然と触れる機会が得られたからです。
+                このような教育スタイルは、特に留学生にとっては日本社会の理解に大きな成長になります。</p>
+            <div></div>
+            <p>日本人学生にとっても、ここではスウェーデン、韓国、台湾、ミャンマー、
+                中国など、さまざまな国から来た学生たちと出会うことができます。
+                専門的な知識を学びながら、それぞれの国の文化に触れたり、
+                国を越えた友人関係を築いたりすることができます。</p>
+        </section>
+    </main>
+
+    <footer>
+        <section class="footer-nav-box  fade-toggle">
+            <div class="footer-nav">
+                <a href="../student-life/index.html" class="footer-box">
+                    <img src="../img/37.JPG" alt="">
+                    <h4 class="nav-h4">学生の日常</h4>
+                </a>
+                <a href="../student-interview/index.html" class="footer-box">
+                    <img src="../img/12.JPG" alt="">
+                    <h4 class="nav-h4">先輩インタビュー</h4>
+                </a>
+                <a href="../student-growth/index.html" class="footer-box">
+                    <img src="../img/38.JPG" alt="">
+                    <h4 class="nav-h4">学生の育成</h4>
+                </a>
+                <a href="#" class="scroll-to-top">
+                    <img class="web" src="../img/imags/top-main-bg2.png" alt="">
+                    <h4>TOPに戻る</h4>
+                </a>
+            </div>
+        </section>
+
+        <section class="footer-bot">
+            <div class="footer-bot-d1">
+                <img src="../img/imags/top-footer-bg.png" alt="">
+                <h3>その第一歩</h3>
+                <p>もしWebデザイン学科に興味があれば、ぜひ学校の公式サイト
+                    もチェックしてみてください。
+                </p>
+            </div>
+
+            <div class="footer-bot-d2">
+                <div class="btn">
+                    <a href="https://www.jec.ac.jp/course/mobile/aw/">Webデザイン科ホームページ</a>
+                    <br>
+                    <a href="https://aw-hotpage.jec.ac.jp/">Webデザイン科NEWS</a>
+                </div>
+                <address>
+                    学校法人電子学園 学生募集部（入学相談室）<br>
+                    TEL:03-3363-2985<br>
+                    FAX:03-3363-7107<br>
+                    E-Mail:jp@jec.ac.jp<br>
+                    サイト: <a href="https://www.jec.ac.jp/">https://www.jec.ac.jp/</a>
+                </address>
+            </div>
+            <small>Copyright © HE XIN</small>
+        </section>
+    </footer>
+    <script>
+        const images = [
+            "../img/life/f-1.JPG",
+            "../img/life/f-2.JPG",
+            "../img/life/f-3.JPG",
+            "../img/life/f-4.JPG",
+            "../img/life/f-5.JPG"
+        ];
+
+        const track = document.getElementById("carousel-track");
+        let currentIndex = 0;
+        let isPaused = false;
+
+        function getIndex(i) {
+            return (i + images.length) % images.length;
+        }
+
+        function preloadThree(index, callback) {
+            const toLoad = [
+                images[getIndex(index - 1)],
+                images[index],
+                images[getIndex(index + 1)]
+            ];
+            let loaded = 0;
+            toLoad.forEach(src => {
+                const img = new Image();
+                img.src = src;
+                img.onload = img.onerror = () => {
+                    loaded++;
+                    if (loaded === 3) callback();
+                };
+            });
+        }
+
+        function createSlide(index) {
+            const slide = document.createElement("div");
+            slide.className = "carousel-slide";
+
+            const createImage = (i, className, clickHandler) => {
+                const img = new Image();
+                img.src = images[getIndex(i)];
+                img.className = `carousel-image ${className}`;
+                img.onclick = clickHandler;
+                img.onmouseenter = () => isPaused = true;
+                img.onmouseleave = () => isPaused = false;
+                return img;
+            };
+
+            const imgLeft = createImage(index - 1, "left", () => updateCarousel(-1));
+            const imgCenter = createImage(index, "center");
+            const imgRight = createImage(index + 1, "right", () => updateCarousel(1));
+
+            slide.appendChild(imgLeft);
+            slide.appendChild(imgCenter);
+            slide.appendChild(imgRight);
+            return slide;
+        }
+
+        function renderInitial() {
+            const firstSlide = createSlide(currentIndex);
+            firstSlide.style.transform = "translateX(100%)"; // 初始位置在右边
+            track.appendChild(firstSlide);
+
+            // 关键：下一帧触发动画
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    firstSlide.classList.add("active");
+                    firstSlide.style.transform = "translateX(0)";
+                });
+            });
+        }
+
+
+        function updateCarousel(direction) {
+            const newIndex = getIndex(currentIndex + direction);
+            preloadThree(newIndex, () => {
+                const oldSlide = track.querySelector(".carousel-slide.active");
+                const newSlide = createSlide(newIndex);
+                track.appendChild(newSlide);
+
+                // Step 1: 设置新 slide 初始位置（静默放入）
+                newSlide.style.transform = `translateX(${direction * 100}%)`;
+                newSlide.style.opacity = "1";
+
+                // Step 2: 下一帧触发过渡动画
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        newSlide.classList.add("active");
+                        newSlide.style.transform = "translateX(0)";
+                        if (oldSlide) {
+                            oldSlide.classList.remove("active");
+                            oldSlide.classList.add(direction === 1 ? "to-left" : "to-right");
+                        }
+                    });
+                });
+
+                // Step 3: 动画结束后清除旧 slide
+                setTimeout(() => {
+                    if (oldSlide && oldSlide.parentNode) {
+                        track.removeChild(oldSlide);
+                    }
+                    currentIndex = newIndex;
+                }, 650);
+            });
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            preloadThree(currentIndex, renderInitial);
+
+            setInterval(() => {
+                if (!isPaused) {
+                    updateCarousel(1);
+                }
+            }, 4000);
+        });
+
+    </script>
+</body>
+
+</html>

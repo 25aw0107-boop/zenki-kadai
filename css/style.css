@@ -1,0 +1,504 @@
+/* ================================================
+                    通用样式PC
+================================================== */
+
+h3 {
+    font-size: clamp(20px, 1.5vw, 24px);
+}
+
+p {
+    font-size: clamp(16px, 1.2vw, 20px);
+    line-height: 2.8;
+    color: #333;
+
+}
+
+/* 为所有带有hgt标签p设置下行距隔开距离 */
+.hgt {
+    margin-bottom: 1em;
+}
+
+
+
+/* ==============================================
+                    PC端通用样式
+=============================================== */
+@media (min-width: 768px) {
+
+    /* 为h3增加空行 */
+    h3 {
+        margin-left: -5%;
+
+    }
+
+    .fade-toggle {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 1s ease, transform 1s ease;
+        will-change: opacity, transform;
+    }
+
+    .fade-toggle.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+
+    /* =======================
+            footer
+    ========================= */
+    footer {
+        padding-top: 12%;
+    }
+
+    .footer-nav-box {
+        background-color: #EEF2FF;
+        margin-bottom: 2%;
+        position: relative;
+        height: 220px;
+        width: 100%;
+    }
+
+    .footer-nav {
+        display: flex;
+        padding: 0 15%;
+        position: absolute;
+        bottom: 50px;
+        text-align: center;
+    }
+
+    .footer-nav>a {
+        width: 22%;
+        margin: 0 auto;
+    }
+
+    .web {
+        margin-top: -8%;
+    }
+
+    .footer-nav>a img {
+        border-radius: 5% 5% 0 0;
+    }
+
+    .footer-nav>a .nav-h4 {
+        background-color: #fff;
+        padding: 10px 0;
+        border-radius: 0 0 15px 15px;
+    }
+
+    .footer-bot {
+        background-color: #8092C8;
+    }
+
+
+
+    .footer-box {
+        cursor: pointer;
+        /* 鼠标变成手型 */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 10px;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .footer-box:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+
+
+    /* 鼠标移上父元素 footer-box 时 h4 跟着变 */
+    .footer-box:hover h4 {
+        background-color: #6678AF;
+        color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transform: translateY(-3px);
+    }
+
+
+    .footer-box img {
+        width: 100%;
+        transition: transform 0.4s ease;
+    }
+
+    .footer-box:hover img {
+        transform: scale(1.1);
+    }
+
+
+    /* footer-bot */
+    .footer-bot {
+        padding: 5% 10% 0 10%;
+        display: grid;
+        grid-template-areas:
+            "r l"
+            "txt txt";
+        grid-template-columns: 1.5fr 1fr;
+    }
+
+    .footer-bot-d1 {
+        grid-area: r;
+    }
+
+    .footer-bot-d2 {
+        grid-area: l;
+    }
+
+    small {
+        grid-area: txt;
+    }
+
+    /* 左侧 */
+    .footer-bot-d1 h3,
+    .footer-bot-d1 p {
+        color: #fff;
+        margin: 0 0 0 20px;
+    }
+
+
+    /* 右侧 */
+    .footer-bot .btn {
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+        /* 宽度根据内容自适应 */
+        min-width: 280px;
+        /* 设置最小宽度 */
+        padding: 10px 20px;
+        /* 整体内边距 */
+        background-color: transparent;
+        /* 去掉背景，按钮自身有背景 */
+    }
+
+
+    .footer-bot .btn a {
+        position: relative;
+        display: block;
+        color: #5F5F5F;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1.1rem;
+        padding: 25px 30px;
+        /* 上下左右内边距，保持胶囊大小 */
+        border-radius: 50px;
+        /* 完全圆角，胶囊形 */
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, color 0.3s ease;
+        text-align: center;
+    }
+
+    .footer-bot .btn a:hover {
+        background-color: #6678AF;
+        color: #fff;
+    }
+
+    .footer-bot .btn a:hover::after {
+        transform: scaleX(1);
+    }
+
+    .footer-bot-d2 address {
+        padding-top: 10%;
+        color: #fff;
+        text-align: center;
+    }
+
+    .footer-bot small {
+        margin: 5% auto;
+        color: #fff;
+    }
+
+
+    /* ========================
+                nav
+    ========================= */
+
+    header .nav {
+        display: flex;
+        width: 100%;
+        background-color: #6678AF;
+        box-shadow: 2px 2px 8px #455175;
+    }
+
+    header .nav h1 {
+        display: flex;
+        /* h1 变成弹性容器 */
+        justify-content: center;
+        /* 水平居中 */
+        align-items: center;
+        /* 垂直居中 */
+        height: 100px;
+        margin-left: 2%;
+    }
+
+    header .nav h1 img {
+        width: 60%;
+    }
+
+    header ul {
+        display: flex;
+        /* 菜单横向排列 */
+        margin-left: auto;
+        /* 将 ul 推到右侧 */
+        padding: 0;
+        width: 60%;
+    }
+
+    header ul li {
+        color: #fff;
+        text-align: center;
+        margin: auto 3%;
+        /* 将 li 推到右侧 */
+        margin-left: auto;
+    }
+
+
+    header ul li a {
+        position: relative;
+        color: #fff;
+        text-decoration: none;
+        /* 去掉默认下划线 */
+        display: inline-block;
+        /* 方便伪元素定位 */
+        padding-bottom: 5px;
+        /* 给下划线留点空间 */
+    }
+
+    header ul li a span {
+        font-size: clamp(12px, 1.2vw, 16px);
+    }
+
+    header ul li a {
+        font-size: clamp(18px, 1.2vw, 24px);
+    }
+
+    /* 伪元素作为下划线 */
+    header ul li a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 2px;
+        /* 下划线厚度 */
+        width: 100%;
+        background-color: white;
+        transform: scaleX(0);
+        /* 初始无宽度 */
+        transform-origin: left;
+        transition: transform 0.3s ease;
+    }
+
+    /* 悬浮时动画展开 */
+    header ul li a:hover::after {
+        transform: scaleX(1);
+    }
+}
+
+
+/* ================================================
+                    移动端通用样式
+================================================== */
+@media (max-width: 768px) {
+
+    /* =======================
+            nav
+    ========================= */
+    main {
+        background: #d7e0f9;
+    }
+
+    main section {
+        border-radius: 20px;
+        padding: 18px;
+        margin-bottom: 28px;
+        background: #fff;
+    }
+
+    /* 汉堡包按钮 */
+    .nav {
+        position: relative;
+        background: #6678AF;
+    }
+
+    /* 隐藏原始菜单 */
+    .nav ul {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100%;
+        background: #fff;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: 60px 20px;
+        transition: right 0.3s ease;
+        z-index: 1001;
+        /* 比遮罩层高 */
+    }
+
+    /* 打开时 */
+    .nav ul.open {
+        right: 0;
+    }
+
+    /* 汉堡按钮样式 */
+    .hamburger {
+        width: 45px;
+        height: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        cursor: pointer;
+        z-index: 1000;
+        /* 比菜单更高 */
+    }
+
+    .hamburger span {
+        display: block;
+        height: 3px;
+        background: #ffffff;
+        border-radius: 5px;
+        transition: 0.3s;
+    }
+
+    #navMenu li {
+        font-size: 20px;
+        margin-bottom: 14px;
+        margin-left: 30px;
+        margin-top: 20px;
+        color: #6678AF;
+        font-weight: 500;
+    }
+
+    /* 打开时的汉堡按钮动画（X形状） */
+    .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(6px, -6px);
+    }
+
+
+    /* 遮罩层 */
+    .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease;
+        z-index: 1000;
+        /* 在菜单下面、在内容上面 */
+    }
+
+    .menu-overlay.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+
+    /* 其他heder */
+    header .nav {
+        display: flex;
+    }
+
+    header .nav .LOGO {
+        margin-right: auto;
+        display: flex;
+        /* h1 变成弹性容器 */
+        justify-content: center;
+        /* 水平居中 */
+        align-items: center;
+    }
+
+    header .nav .LOGO img {
+        width: 35%;
+        margin: 5%;
+    }
+
+    header .nav .hamburger {
+        margin: 5%;
+    }
+
+    header ul li a span {
+        display: none;
+    }
+
+    /* =======================
+            footer
+    ========================= */
+    .footer-box img,
+    .scroll-to-top {
+        display: none;
+    }
+
+    footer {
+        padding: 10px;
+        background-color: #8092C8;
+        /* 防止子元素塌陷 */
+        overflow: auto;
+    }
+
+    footer .footer-nav {
+        display: flex;
+        text-align: center;
+        background: #bbcbfa;
+        border-radius: 15px;
+    }
+
+    footer .footer-nav a {
+        font-size: 12px;
+        width: 25%;
+        height: 50px;
+        display: flex;
+        /* h1 变成弹性容器 */
+        justify-content: center;
+        /* 水平居中 */
+        align-items: center;
+        border-left: 2px solid #8693bb;
+    }
+
+    footer .footer-nav a:first-child {
+        border: none;
+    }
+
+    .scroll-to-top img {
+        display: none;
+    }
+
+    .footer-bot-d1 img {
+        width: 90%;
+        margin: 5%;
+    }
+
+    .footer-bot-d1 h3,
+    .footer-bot-d1 p,
+    .footer-bot-d2 .btn {
+        display: none;
+    }
+
+    .footer-bot-d2 address {
+        color: #fff;
+        font-size: 12px;
+        margin-left: 7%;
+    }
+
+    small {
+        display: block;
+        /* 让 small 变成块级元素 */
+        text-align: center;
+        /* 文本居中 */
+        margin: 5%;
+    }
+}

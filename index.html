@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOP</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/script.js" defer></script>
+    <style>
+        /* ================================================
+                            top页PC端
+        ================================================== */
+
+        @media (min-width: 768px) {
+
+            html {
+                overflow-y: scroll;
+                /* 始终显示垂直滚动条 */
+            }
+
+            /* ========================
+                固定 header 区域 + 动画廊
+            ========================= */
+            header {
+                position: fixed;
+                /* 保持 header 原地不动 */
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                /* 占据整个视口高度 */
+                background: #6678AF;
+                z-index: 100;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                transition: opacity 0.3s;
+                /* 设置透明度过渡动画 */
+                /* 硬件加速提示，让动画更顺畅· */
+                will-change: opacity;
+            }
+
+            /* ========================
+                主内容占位 + 滑入区域
+            ========================= */
+            /* 主体内容，用于被滚动上来覆盖 */
+            main {
+                margin-top: 100vh;
+                /* 确保 main 不会被固定 header 挡住 */
+                /* background: linear-gradient(to bottom, #add8e6, #f0f8ff); */
+                padding: 0 7.5%;
+                font-size: 2rem;
+            }
+
+            /* ========================
+                ↓↓↓↓↓↓流动画廊↓↓↓↓↓↓
+            ========================= */
+            .gallery-container {
+                display: flex;
+                flex-direction: column;
+                margin-top: 20px;
+                width: 100%;
+            }
+
+            .row {
+                flex: 1;
+                overflow: hidden;
+                position: relative;
+                height: 120px;
+                /* ✅ 如发现最后一行被裁剪，可手动加上 height */
+                /* 若仍有问题也可给 .gallery-container 设置固定高度 */
+            }
+
+            .scroller {
+                display: flex;
+                height: 100%;
+                width: fit-content;
+                animation: scrollLeft 40s linear infinite;
+            }
+
+            .row:nth-child(even) .scroller {
+                animation-name: scrollRight;
+            }
+
+            @keyframes scrollLeft {
+                0% {
+                    transform: translateX(0);
+                }
+
+                100% {
+                    transform: translateX(-50%);
+                }
+            }
+
+            @keyframes scrollRight {
+                0% {
+                    transform: translateX(-50%);
+                }
+
+                100% {
+                    transform: translateX(0);
+                }
+            }
+
+            .item {
+                margin: 1px;
+                height: calc(100% - 2px);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .item img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                filter: grayscale(100%);
+                opacity: 1;
+                transition: opacity 0.6s ease, transform 0.4s ease-in-out, filter 0.3s ease;
+            }
+
+            .item img.fading {
+                opacity: 0;
+            }
+
+            .row:hover .scroller {
+                animation-play-state: paused !important;
+            }
+
+            .item:hover img {
+                transform: scale(1.1);
+                filter: grayscale(0%);
+                z-index: 1;
+            }
+
+            /* 由于浏览器在不断渲染画廊导致累积运行而出现视觉问题。用一下代码优化浏览器 */
+            .scroller {
+                will-change: transform;
+            }
+
+
+            /* ===== 放大预览层 ===== */
+            .image-modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.7);
+                /* 灰色半透明遮罩 */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 999;
+            }
+
+            .image-modal img {
+                max-width: 90%;
+                max-height: 90%;
+                box-shadow: 0 0 20px #000;
+                border-radius: 8px;
+            }
+
+            /* 关闭按钮 */
+            .image-modal .close-btn {
+                position: absolute;
+                top: 30px;
+                right: 40px;
+                font-size: 30px;
+                color: #fff;
+                background: rgba(0, 0, 0, 0.5);
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                text-align: center;
+                line-height: 40px;
+                cursor: pointer;
+                transition: background 0.3s;
+            }
+
+            .image-modal .close-btn:hover {
+                background: rgba(255, 255, 255, 0.5);
+                color: black;
+            }
+
+            /* 画廊初始隐藏 + 渐现 */
+            .gallery-container {
+                max-height: 60vh;
+                /* 限制画廊最大高度为视口的60% */
+                overflow: hidden;
+                /* 避免撑爆 header */
+                opacity: 0;
+                transition: opacity 1s ease;
+            }
+
+            .gallery-container.visible {
+                opacity: 1;
+            }
+
+            /* ========================
+                ↑↑↑↑↑↑流动画廊↑↑↑↑↑↑
+            ========================= */
+
+            /* ========================
+                    其他header
+            ========================= */
+            /* 初始隐藏 */
+            header .nav {
+                opacity: 0;
+                transform: translateY(-20px);
+                /* 上移一点，淡入更自然 */
+                transition: opacity 1s ease, transform 1s ease;
+            }
+
+            /* 加上 visible 时淡入 */
+            header .nav.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            header .nav .LOGO {
+                display: flex;
+                /* h1 变成弹性容器 */
+                justify-content: center;
+                /* 水平居中 */
+                align-items: center;
+                /* 垂直居中 */
+                height: 100px;
+                margin-left: 2%;
+            }
+
+            header .nav .LOGO img {
+                width: 60%;
+            }
+
+            header ul {
+                display: flex;
+                /* 菜单横向排列 */
+                margin-left: auto;
+                /* 将 ul 推到右侧 */
+                padding: 0;
+                width: 60%;
+            }
+
+            header ul.visible {
+                opacity: 1;
+            }
+
+            .had-message {
+                text-align: center;
+                opacity: 0;
+                transition: opacity 1s ease;
+                color: #fff;
+            }
+
+            .had-message.visible {
+                opacity: 1;
+            }
+
+            h1 {
+                position: relative;
+                display: inline-block;
+                overflow: hidden;
+                width: fit-content;
+                margin: 0 auto;
+            }
+
+            h1 img {
+                display: block;
+                max-width: 75%;
+                height: auto;
+                /* ✅ 添加这句很重要 */
+                margin: 0 auto;
+            }
+
+            /* 遮罩动画效果 */
+            h1::after {
+                margin: 1% 0;
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                background: #6678AF;
+                ;
+                /* 遮罩颜色应与背景相同 */
+                transform: translateX(0%);
+                transition: transform 1.5s cubic-bezier(1, 1, 1, 1);
+                z-index: 2;
+                pointer-events: none;
+            }
+
+            /* 动画触发类 */
+            h1.reveal::after {
+                transform: translateX(100%);
+            }
+
+
+            /* ========================
+                    main1
+            ========================= */
+            /* 按钮 */
+            .interview-link {
+                font-size: clamp(16px, 1.5vw, 24px);
+                position: relative;
+                z-index: 10;
+                display: inline-block;
+                background: #8092C8;
+                color: #fff;
+                border-radius: 50px;
+                text-align: center;
+                max-width: 200px;
+                width: 40%;
+                margin: 0 0 0 60%;
+                padding: 12px 24px;
+                text-decoration: none;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            /* 悬浮时动画效果 */
+            .interview-link:hover {
+                background: #5c6db2;
+                /* 深一点的蓝 */
+                color: #ffffff;
+                transform: scale(1.05);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            }
+
+            /* 可选：底部滑入式下划线 */
+            .interview-link::after {
+                content: "";
+                position: absolute;
+                left: 20%;
+                right: 20%;
+                bottom: 8px;
+                height: 2px;
+                background: #ffffff;
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform 0.3s ease;
+            }
+
+            .interview-link:hover::after {
+                transform: scaleX(1);
+            }
+
+
+            /* top页第一段 */
+
+            .main-s1 {
+                padding-top: 150px;
+                display: grid;
+                grid-template-areas:
+                    "txt img";
+                grid-template-columns: 1.5fr 1fr;
+                margin: auto;
+                width: 80%;
+            }
+
+            .main-s1 .main-s1-d1 {
+                grid-area: txt;
+            }
+
+            .main-s1 .main-s1-d2 {
+                grid-area: img;
+            }
+
+            /* 右边图片 */
+            .main-s1-d2 {
+                position: relative;
+                width: 100%;
+                max-width: 400px;
+                min-width: 350px;
+                /* ✅ 你可以改成需要的宽度 */
+                aspect-ratio: 4 / 3;
+                /* ✅ 保持宽高比，或改成 height: 固定值 */
+                padding-left: 5%;
+            }
+
+            .main-s1-d2 img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: auto;
+                opacity: 0;
+                transform: translateY(30px);
+                transition: all 1s ease-out;
+            }
+
+            /* ✅ 人物动画出现 */
+            .fade-in-img.visible {
+                opacity: 1;
+                transform: translateY(0);
+                transition-delay: 0.5s;
+                /* 可以调大，比如 0.5s */
+            }
+
+            /* ✅ 文字图动画，稍有延迟 */
+            .fade-in-txt.visible {
+                opacity: 1;
+                transform: translateY(0);
+
+            }
+
+            /* 左边文字 */
+            .main-s1-d1 {
+                max-width: 780px;
+                min-width: 360px;
+                margin: 0 auto;
+                padding: 0 5% 0 10%;
+            }
+
+
+            /* ========================
+                    main2
+            ========================= */
+            .main-s2 {
+                padding: 0 15%;
+                display: grid;
+                grid-template-areas:
+                    "txt img";
+                grid-template-columns: 1.5fr 1fr;
+                padding-top: 15%;
+                /* no-repeat显示的图片不会重复，50% 360px设置位置， */
+                background: url(../img/imags/top-main-bg3.png)no-repeat 50% 100%;
+            }
+
+            .main-s2 .main-s2-d1 {
+                grid-area: txt;
+            }
+
+            .main-s2 .main-s2-d2 {
+                grid-area: img;
+            }
+
+            /* 右边图片 */
+
+            .main-s2-d2 {
+                position: relative;
+            }
+
+            .main-s2-d2 img {
+                min-width: 250px;
+                width: 45%;
+            }
+
+            .card1 {
+                margin-left: 5%;
+            }
+
+            .card2 {
+                margin-left: 15%;
+            }
+
+            .card3 {
+                margin-left: 5%;
+            }
+
+            .card {
+                transition: transform 0.4s ease, box-shadow 0.4s ease;
+                transform-style: preserve-3d;
+                will-change: transform;
+                cursor: pointer;
+            }
+
+            .card:hover {
+                transform: rotateY(10deg) rotateX(5deg) scale(1.05);
+                box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3);
+            }
+
+            /* 左边文字 */
+            .main-s2-d1 {
+                max-width: 780px;
+                min-width: 360px;
+                margin: 0 auto;
+                padding: 0 5% 0 15%;
+            }
+
+            /* ========================
+                    main3
+            ========================= */
+            .main-s3 {
+                padding-top: 15%;
+                display: grid;
+                grid-template-areas:
+                    "txt div"
+                    "a a";
+                grid-template-columns: 0.1fr 1fr;
+                width: 65%;
+                margin: 0 auto;
+                gap: 20px;
+            }
+
+            .main-s3 .main-s3-d2 {
+                grid-area: div;
+            }
+
+            .main-s3 a {
+                grid-area: a;
+            }
+
+            /* 左侧漂浮文字 */
+            .main-s3 .main-s3-d1 {
+                display: flex;
+                /* 设置横向排列 */
+                justify-content: space-between;
+                /* 左右对齐 */
+                grid-area: txt;
+            }
+
+            .main-s3 .main-s3-d1 p {
+                writing-mode: vertical-rl;
+                color: #6678AF;
+                font-size: clamp(24px, 2vw, 36px);
+                letter-spacing: 0.5em;
+                margin: 0;
+                /* 去掉默认外边距，避免被挤 */
+                width: 1.5em;
+            }
+
+            .main-s3 .main-s3-d1 .p1 {
+                margin-top: 60px;
+
+            }
+
+            .main-s3 .main-s3-d1 .p2 {
+                margin-top: -40px;
+            }
+
+
+            /* 右侧图片+文字 */
+            .main-s3-d2 {
+                display: grid;
+                grid-template-areas:
+                    "h3 h3"
+                    "p1 p1"
+                    "img p2";
+                grid-template-columns: 1fr 1fr;
+                margin-right: 15%;
+                background: url(img/imags/top-main-bg1.png)no-repeat 100% 0%;
+                background-size: 60%;
+                margin: 0 auto;
+            }
+
+            .main-s3-d2 h3 {
+                grid-area: h3;
+                text-align: right;
+            }
+
+            .main-s3-d2 .p1 {
+                grid-area: p1;
+            }
+
+            .main-s3-d2 .p2 {
+                grid-area: p2;
+                margin-left: 20px;
+            }
+
+            .main-s3-d2 div {
+                grid-area: img;
+                max-width: 500px;
+                width: 100%;
+                height: 100%;
+                /* min-height: 250px; */
+                background-image: url(img/top/s3-1.JPG);
+                background-size: cover;
+                /* 关键：等比缩放填满容器 */
+                background-position: center;
+                /* 图片居中显示 */
+                background-repeat: no-repeat;
+                margin: 20px auto;
+            }
+        }
+
+        /* ================================================
+                             top页移动端
+        ================================================== */
+
+        @media (max-width: 768px) {
+
+            /* 取消显示的元素 */
+            #galleryContainer {
+                display: none;
+            }
+
+            header p {
+                display: none;
+            }
+
+            header h1,
+            .gallery-container,
+            .main-s3-d1 {
+                display: none;
+            }
+
+            header {
+                width: 100%;
+                /* 占据整个视口高度 */
+            }
+
+            .main-s3-d2 div {
+                background-image: url(img/top/s3-1.JPG);
+                height: 250px;
+                background-size: cover;
+                /* 关键：等比缩放填满容器 */
+                background-position: center;
+                /* 图片居中显示 */
+                background-repeat: no-repeat;
+            }
+
+            .main-s1-d2 {
+                display: none;
+            }
+
+            /* 其他修改 */
+            main {
+                padding: 16px;
+            }
+
+            /* section 外框 */
+            main section {
+                border-radius: 20px;
+                padding: 18px;
+                margin-bottom: 28px;
+                box-shadow: 0px 0px 9px #aeaeae;
+
+            }
+
+            /* 标题 */
+            section h3 {
+                font-size: 20px;
+                font-weight: 600;
+                margin-bottom: 14px;
+                text-align: center;
+                color: #222;
+            }
+
+            /* 段落文字 */
+            section p {
+                font-size: 15px;
+                line-height: 1.8;
+                margin-bottom: 12px;
+                color: #444;
+            }
+
+
+
+            /* 图片组（竖排 + 圆角） */
+            .main-s2-d2 {
+                display: flex;
+                gap: 12px;
+                margin-top: 14px;
+            }
+
+            .main-s2-d2 img {
+                width: 31%;
+                border-radius: 10px;
+            }
+
+
+            /* main-s3 特殊部分 */
+            .main-s3-d1 {
+                text-align: center;
+                margin-bottom: 14px;
+            }
+
+            .main-s3-d1 .p1 {
+                font-size: 17px;
+                font-weight: bold;
+                margin-bottom: 6px;
+            }
+
+            .main-s3-d1 .p2 {
+                font-size: 14px;
+                color: #666;
+            }
+
+            .main-s3-d2 h3 {
+                font-size: 18px;
+                margin-bottom: 10px;
+                color: #333;
+            }
+
+            .main-s3-d2 div {
+                border-radius: 10px;
+            }
+
+            /* 按钮 */
+            .interview-link {
+                display: block;
+                margin: 18px auto 0;
+                padding: 12px 20px;
+                text-align: center;
+                font-size: 15px;
+                background: #8092C8;
+                color: #fff;
+                font-weight: 500;
+                border-radius: 8px;
+                text-decoration: none;
+                width: fit-content;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header id="mainHeader">
+        <div class="nav">
+            <div class="LOGO"><a href="index.html"><img src="img/imags/LOGO.png" alt=""></a></div>
+            <!-- 汉堡按钮 -->
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <ul id="navMenu">
+                <li><a href="index.html">トップ<br><span>TOP</span></a></li>
+                <li><a href="student-life/index.html">学生の日常<br><span>Student's daily life</span></a></li>
+                <li><a href="student-interview/index.html">先輩インタビュー<br><span>Senior Interview</span></a></li>
+                <li><a href="student-growth/index.html">学生の育成<br><span>Student Development</span></a></li>
+            </ul>
+        </div>
+        <!-- 背景遮罩层 -->
+        <div class="menu-overlay" id="menuOverlay"></div>
+
+        <h1><img src="img/imags/h1-1.png" alt=""></h1>
+        <p class="had-message">―公式サイトにない学生の声を読めば、きっとイメージしやすくなる！―</p>
+        <div class="gallery-container" id="galleryContainer"></div>
+    </header>
+    <main>
+        <section class="main-s1 fade-toggle">
+            <div class="main-s1-d1">
+                <h3>留学生がよくある不安</h3>
+                <p class="hgt">入学が決まった時嬉しさと期待でいっぱいでしたが、同時にいろいろな不安もありました。
+                    自分が去年の今ごろ、いちばん不安だったのは、やっぱり日本語のレベルが授業についていけるかどうかという点でした。
+                </p>
+                <p>JLPTに合格していても、それだけでは実際の授業が理解できるかどうかは分かりません。そのために先輩インタビューを用意しました。それを見ることで、入学前に自分の日本語力を見直すきっかけになれば安心につながると思います。
+                </p>
+            </div>
+            <div class="main-s1-d2">
+                <img class="fade-in-img" src="img/imags/img-renwu.png" alt="人物">
+                <img class="fade-in-txt" src="img/imags/img-wenzi.png" alt="文字">
+            </div>
+            <a class="interview-link" href="student-interview/index.html">もっと見る</a>
+        </section>
+
+        <section class="main-s2 fade-toggle">
+            <div class="main-s2-d1">
+                <h3>Webデザイン科のイメージ</h3>
+                <p class="hgt">クラスメンバーは、日本人と留学生が半分ずつ在籍しており、
+                    多文化な学園生活が広がっています。
+                </p>
+                <p>このような環境は、留学生にとっても日本人学生にとっても、新しい体験となるでしょう。
+                    多文化の雰囲気の中で学ぶことは、専門的な知識だけでなく、さまざまな文化交流を通じて、
+                    これまでにないユニークな学園生活を実現します。俺たちのリアルの学園生活を見てみよう！
+                </p>
+            </div>
+            <div class="main-s2-d2">
+                <img class="card card1" src="img/top/s1-1.JPG" alt="">
+                <img class="card card2" src="img/top/s1-2.JPG" alt="">
+                <img class="card card3" src="img/top/s1-3.JPG" alt="">
+            </div>
+            <a class="interview-link" href="student-life/index.html">もっと見る</a>
+        </section>
+
+        <section class="main-s3 fade-toggle">
+            <div class="main-s3-d1">
+                <p class="p1">支える環境</p>
+                <p class="p2">不安に対策</p>
+            </div>
+            <div class="main-s3-d2">
+                <h3><span>Webデザイン学科の</span>学生育成</h3>
+                <div></div>
+                <p class="p1">
+                    留学生が半数を占めているほか、高校を卒業してすぐに専門知識を
+                    ゼロから学び始める学生も多く在籍しています。そうした多様な学生が安心して学べるよう、
+                    学習環境だけでなく、指導方法や教育体制にも工夫がされています。
+                </p>
+                <p class="p2">
+                    実際の授業風景や学生の様子を見ていただければ、その工夫の一端が感じられるはずです。
+                    その内容はぜひご自身の目で確かめてみてください。
+                </p>
+            </div>
+            <a class="interview-link" href="student-growth/index.html">もっと見る</a>
+        </section>
+    </main>
+
+    <footer>
+        <section class="footer-nav-box  fade-toggle">
+            <div class="footer-nav">
+                <a href="student-life/index.html" class="footer-box">
+                    <img src="img/37.JPG" alt="">
+                    <h4 class="nav-h4">学生の日常</h4>
+                </a>
+                <a href="student-interview/index.html" class="footer-box">
+                    <img src="img/12.JPG" alt="">
+                    <h4 class="nav-h4">先輩インタビュー</h4>
+                </a>
+                <a href="student-growth/index.html" class="footer-box">
+                    <img src="img/38.JPG" alt="">
+                    <h4 class="nav-h4">学生の育成</h4>
+                </a>
+
+                <a href="#" class="scroll-to-top">
+                    <img class="web" src="img/imags/top-main-bg2.png" alt="">
+                    <h4>TOPに戻る</h4>
+                </a>
+            </div>
+        </section>
+
+        <section class="footer-bot">
+            <div class="footer-bot-d1">
+                <img src="img/imags/top-footer-bg.png" alt="">
+                <h3>その第一歩</h3>
+                <p>もしWebデザイン学科に興味があれば、ぜひ学校の公式サイト
+                    もチェックしてみてください。
+                </p>
+            </div>
+
+            <div class="footer-bot-d2">
+                <div class="btn">
+                    <a href="https://www.jec.ac.jp/course/mobile/aw/">Webデザイン科ホームページ</a>
+                    <br>
+                    <a href="https://aw-hotpage.jec.ac.jp/">Webデザイン科NEWS</a>
+                </div>
+                <address>
+                    学校法人電子学園 学生募集部（入学相談室）<br>
+                    TEL:03-3363-2985<br>
+                    FAX:03-3363-7107<br>
+                    E-Mail:jp@jec.ac.jp<br>
+                    サイト: <a href="https://www.jec.ac.jp/">https://www.jec.ac.jp/</a>
+                </address>
+            </div>
+
+            <small>Copyright © HE XIN</small>
+        </section>
+    </footer>
+    <script>
+        // 创建媒体查询对象
+        const mediaQuery = window.matchMedia("(min-width: 768px)");
+
+        // =====================================================
+        // 初始化与入口调用（页面加载、窗口缩放）
+        // =====================================================
+        let imageChangeIntervalId = null;
+
+        function stopImageChangeInterval() {
+            if (imageChangeIntervalId) {
+                clearInterval(imageChangeIntervalId);
+                imageChangeIntervalId = null;
+            }
+        }
+
+        function initGallery() {
+            stopImageChangeInterval();
+            const shuffled = shuffle([...imageUrls]);
+            preloadImages(shuffled).then(() => {
+                createGallery(shuffled);
+            }).catch(err => console.error("图片预加载失败:", err));
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initGallery();
+            playH1Animation();
+            setTimeout(fadeInGallery, 300);
+        });
+
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                initGallery();
+            }, 300);
+        });
+
+
+        // =====================================================
+        // 标题与页面元素动画控制（h1动画、画廊淡入）
+        // =====================================================
+        function playH1Animation() {
+            const h1 = document.querySelector('h1');
+            h1.classList.remove('reveal');
+            void h1.offsetWidth;  // 强制重绘
+            h1.classList.add('reveal');
+        }
+
+        function fadeInGallery() {
+            const gallery = document.getElementById('galleryContainer');
+            const message = document.querySelector('.had-message');
+            const navMenu = document.querySelector('header ul');
+            const nav = document.querySelector('header .nav'); // 新增
+
+            gallery.classList.add('visible');
+            message.classList.add('visible');
+            navMenu.classList.add('visible');
+            nav.classList.add('visible'); // 新增：整个导航栏一起淡入
+        }
+
+
+        // 禁止页面初始滚动，延迟 1.2s 解锁
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => {
+            document.body.style.overflow = '';
+        }, 1200);
+
+
+        // =====================================================
+        // 画廊数据与生成逻辑
+        // =====================================================
+        const container = document.getElementById('galleryContainer');
+        const imageUrls = Array.from({ length: 36 }, (_, i) => `img/${i + 1}.jpg`);
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function preloadImages(imageUrls) {
+            return Promise.all(imageUrls.map(src => {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.onload = resolve;
+                    img.onerror = reject;
+                    img.src = src;
+                });
+            }));
+        }
+
+        // 动态生成图片画廊（滚动区域）
+        function createGallery(preloadedImages = imageUrls) {
+            container.innerHTML = "";
+            const screenWidth = window.innerWidth;
+            let cols =
+                screenWidth <= 1280 ? 5 :
+                    screenWidth <= 1440 ? 6 :
+                        screenWidth <= 1680 ? 7 : 8;
+
+            // 流动画廊行数
+            const rows = 2;
+            const animationDurations = [60, 60];
+
+            for (let r = 0; r < rows; r++) {
+                const row = document.createElement('div');
+                row.className = 'row';
+
+                const scroller = document.createElement('div');
+                scroller.className = 'scroller';
+                scroller.style.animationDuration = animationDurations[r] + 's';
+
+                let rowImages = [];
+                for (let i = 0; i < cols; i++) {
+                    const imgIndex = (r * cols + i) % preloadedImages.length;
+                    rowImages.push(preloadedImages[imgIndex]);
+                }
+
+                // 复制一组实现无缝滚动
+                rowImages = rowImages.concat(rowImages);
+
+                rowImages.forEach(src => {
+                    const item = document.createElement('div');
+                    item.className = 'item';
+                    item.style.flex = `0 0 calc(100vw / ${cols})`;
+
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.style.cursor = 'pointer';
+
+                    img.addEventListener('click', () => {
+                        showImageModal(img.src);
+                    });
+
+                    item.appendChild(img);
+                    scroller.appendChild(item);
+                });
+
+                row.appendChild(scroller);
+                container.appendChild(row);
+            }
+        }
+
+
+        // =====================================================
+        // 点击图片弹出大图（模态框查看图片）
+        // =====================================================
+        function showImageModal(imageUrl) {
+            const modal = document.createElement('div');
+            modal.className = 'image-modal';
+
+            const img = document.createElement('img');
+            img.src = imageUrl;
+
+            const closeBtn = document.createElement('div');
+            closeBtn.className = 'close-btn';
+            closeBtn.innerHTML = '✕';
+
+            function closeModal() {
+                modal.remove();
+            }
+
+            closeBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', e => {
+                if (e.target === modal) closeModal();
+            });
+
+            modal.appendChild(img);
+            modal.appendChild(closeBtn);
+            document.body.appendChild(modal);
+        }
+
+
+        // =====================================================
+        // main-1右侧人物动画
+        // =====================================================
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                } else {
+                    entry.target.classList.remove('visible');
+                }
+            });
+        }, { threshold: 0.3 });
+
+        const targets = document.querySelectorAll('.fade-in-img, .fade-in-txt');
+        targets.forEach(target => observer.observe(target));
+
+
+        // =====================================================
+        // 滚动时 header 透明度渐变（越滚越淡）
+        // =====================================================
+        let ticking = false;
+
+        window.addEventListener('scroll', () => {
+            if (window.innerWidth > 768) { // 只在 PC 端监听
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        updateHeaderOpacity();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }
+        });
+        function updateHeaderOpacity() {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const header = document.getElementById('mainHeader');
+
+            let opacity = 1 - (scrollY / (windowHeight / 1.1));
+            if (opacity < 0) opacity = 0;
+
+            header.style.opacity = opacity;
+
+            if (opacity === 0) {
+                header.style.visibility = 'hidden';
+                header.style.pointerEvents = 'none';
+            } else {
+                header.style.visibility = 'visible';
+                header.style.pointerEvents = 'auto';
+            }
+        }
+    </script>
+</body>
+
+</html>

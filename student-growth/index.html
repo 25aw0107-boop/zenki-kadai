@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生の育成</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/script.js" defer></script>
+    <!-- 引入字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@300..1000&display=swap" rel="stylesheet">
+</head>
+<style>
+    @media (min-width: 768px) {
+
+        /* ------------header------------ */
+        header {
+            overflow: hidden;
+            background: #6678AF;
+        }
+
+        header .ttl {
+            padding: 4% 0;
+            height: 72vh;
+            min-height: 500px;
+            max-width: 100%;
+        }
+
+        header .img {
+            position: relative;
+            overflow: hidden;
+        }
+
+        header .img::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            box-shadow: inset 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 -10px 30px rgba(0, 0, 0, 0.4);
+            pointer-events: none;
+            /* 不挡交互 */
+            z-index: 1;
+        }
+
+        header .img img {
+            filter: brightness(60%);
+        }
+
+        header .txt {
+            position: absolute;
+            top: 50%;
+            transform: translate(0, -50%);
+            left: 0;
+            right: 0;
+            z-index: 1;
+            width: 60%;
+            margin: 0 auto;
+            /* background-color: rgba(0, 0, 0, 0.4); */
+            /* 半透明黑底 */
+            padding: 1em 2em;
+            border-radius: 50px;
+
+        }
+
+        header .txt p {
+            color: #fff;
+            text-shadow: 2px 2px 4px #2e2e2e;
+            font-size: clamp(18px, 2vw, 36px);
+        }
+
+        /* ======================
+        ----------main-1--------
+        ====================== */
+        .num {
+            font-family: 'Recursive', sans-serif;
+            font-size: 6em;
+            font-weight: 700;
+            color: #6678AF;
+        }
+
+        .main-s1 {
+            display: grid;
+            grid-template-areas:
+                "left right";
+            grid-template-columns: 1fr 1.5fr;
+            gap: 50px;
+            width: 50%;
+            min-width: 980px;
+            margin: 0 auto;
+            /* background: url(../img/imags/top-main-bg3.png)no-repeat 100% 100%;
+        background-size: 65%; */
+            padding: 10% 0;
+        }
+
+        .main-s1 .right {
+            grid-area: right;
+        }
+
+        /*----左----*/
+
+        .main-s1 .left {
+            grid-area: left;
+        }
+
+        .main-s1 .left .box {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .main-s1 .left .ttl {
+            position: relative;
+            width: 100px;
+            /* 可按需调整大小 */
+            height: 250px;
+            /* 可按需调整大小 */
+            border-radius: 50px;
+            /* 椭圆裁切 */
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .main-s1 .left .ttl img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+
+            transition: filter 0.4s ease;
+            /* 图片滤镜渐变 */
+        }
+
+        .main-s1 .left .ttl p {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0;
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
+            writing-mode: vertical-rl;
+            z-index: 2;
+
+            transition: color 0.4s ease, text-shadow 0.4s ease;
+            /* 文字颜色 & 光晕渐变 */
+        }
+
+        .main-s1 .left .ttl:hover img {
+            filter: brightness(70%);
+        }
+
+        .main-s1 .left .ttl:hover p {
+            color: #fff;
+            text-shadow: 0 0 10px #fff;
+        }
+
+        .main-s1 .left .txt {
+            min-width: 380px;
+            width: 40%;
+            margin: 0 auto;
+            padding: 0 0 20px 25px;
+        }
+
+        .main-s1 .left .txt p {
+            font-size: 2.8em;
+            font-weight: 700;
+            color: #6678AF;
+            letter-spacing: 0.1em;
+            /* 调整“列”与“列”之间的间距 */
+            line-height: 1.5;
+        }
+
+        /*----右----*/
+        .main-s1 .right .box {
+            display: grid;
+            grid-template-areas:
+                "txt num"
+                "txt ttl"
+                "txt ttl"
+                "txt ttl";
+            grid-template-columns: 1fr 0.2fr;
+            gap: 10px;
+        }
+
+        .main-s1 .right .num {
+            grid-area: num;
+            margin-top: -120%;
+        }
+
+        .main-s1 .right .ttl {
+            grid-area: ttl;
+            writing-mode: vertical-rl;
+            font-size: clamp(20px, 2vw, 28px);
+            letter-spacing: 0.5em;
+            /* 调整“列”与“列”之间的间距 */
+            color: #6678AF;
+            text-align: center;
+            width: 2.5em;
+            margin-top: -75%;
+        }
+
+        .main-s1 .right .txt {
+            grid-area: txt;
+            min-width: 300px;
+        }
+
+        /* ======================
+        ----------main-2--------
+        ====================== */
+
+        /* -------blue background------- */
+        .blue {
+            background-color: #6678AF;
+            margin-bottom: 25%;
+        }
+
+        .blue-inner {
+            position: relative;
+            /* height: 800px; */
+            height: 800px;
+            /* 再嵌套一层div保证最大的父元素不具备相对定位从而保留页面整体的信息流效果 */
+        }
+
+        @media (max-width: 19200px) {
+            .blue-inner {
+                position: relative;
+                height: 715px;
+            }
+        }
+
+        @media (max-width: 1880px) {
+            .blue-inner {
+                position: relative;
+                height: 710px;
+            }
+        }
+
+        @media (max-width: 1820px) {
+            .blue-inner {
+                position: relative;
+                height: 710px;
+            }
+        }
+
+        @media (max-width: 1720px) {
+            .blue-inner {
+                position: relative;
+                height: 710px;
+            }
+        }
+
+        @media (max-width: 1680px) {
+            .blue-inner {
+                position: relative;
+                height: 705px;
+            }
+        }
+
+        @media (max-width: 1620px) {
+            .blue-inner {
+                position: relative;
+                height: 700px;
+            }
+        }
+
+
+        @media (max-width: 1574px) {
+            .blue-inner {
+                position: relative;
+                height: 700px;
+            }
+        }
+
+        @media (max-width: 1520px) {
+            .blue-inner {
+                position: relative;
+                height: 695px;
+            }
+        }
+
+        @media (max-width: 1400px) {
+            .blue-inner {
+                position: relative;
+                height: 690px;
+            }
+        }
+
+        @media (max-width: 1390px) {
+            .blue-inner {
+                position: relative;
+                height: 685px;
+            }
+        }
+
+        @media (max-width: 1380px) {
+            .blue-inner {
+                position: relative;
+                height: 680px;
+            }
+        }
+
+        @media (max-width: 1370px) {
+            .blue-inner {
+                position: relative;
+                height: 675px;
+            }
+        }
+
+        @media (max-width: 1350px) {
+            .blue-inner {
+                position: relative;
+                height: 660px;
+            }
+        }
+
+        @media (max-width: 1340px) {
+            .blue-inner {
+                position: relative;
+                height: 655px;
+            }
+        }
+
+        @media (max-width: 1320px) {
+            .blue-inner {
+                position: relative;
+                height: 650px;
+            }
+        }
+
+        @media (max-width: 1300px) {
+            .blue-inner {
+                position: relative;
+                height: 640px;
+            }
+        }
+
+
+        @media (max-width: 1280px) {
+            .blue-inner {
+                position: relative;
+                height: 635px;
+            }
+        }
+
+        .main-s2 {
+            min-width: 980px;
+            width: 50%;
+            margin: 5% auto 0 auto;
+        }
+
+        .main-s2 .box {
+            display: grid;
+            grid-template-areas:
+                "ttl txt img";
+            grid-template-columns: 0.1fr 1fr 0.8fr;
+            gap: 30px;
+        }
+
+        .main-s2 .box .ttl {
+            grid-area: ttl;
+            color: #fff;
+            writing-mode: vertical-rl;
+            font-size: clamp(24px, 2vw, 28px);
+            letter-spacing: 0.5em;
+            /* 调整“列”与“列”之间的间距 */
+            line-height: 2;
+            margin-top: -120px;
+            font-weight: 300;
+        }
+
+        .main-s2 .box .ttl span {
+            color: #6678AF;
+            font-weight: 400;
+        }
+
+        .main-s2 .box .txt {
+            grid-area: txt;
+            margin-top: -200px;
+            min-width: 400px;
+        }
+
+        .main-s2 .box .txt .txt1 {
+            color: #fff;
+            font-weight: 300;
+            margin-top: -50px;
+        }
+
+        .main-s2 .box .img {
+            grid-area: img;
+            width: 300px;
+            /* 可以根据需要设置 */
+            height: 400px;
+            /* 宽高由你决定 */
+            overflow: hidden;
+            /* 裁剪多余部分 */
+            position: relative;
+            border-radius: 20px;
+            box-shadow: 2px 2px 8px #455175;
+            margin: 0 auto;
+            margin-top: -100px;
+
+        }
+
+        .main-s2 .box .img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* 关键属性：保持比例填充并裁剪多余 */
+            display: block;
+        }
+
+        /* ======================
+        ----------main-3--------
+        ====================== */
+        .main-s3 {
+            margin: 5% auto;
+        }
+
+        .main-s3 .box {
+            display: grid;
+            grid-template-areas:
+                "left1 left right";
+            grid-template-columns: 0.1fr 1fr 0.3fr;
+            gap: 30px;
+            width: 50%;
+            min-width: 980px;
+            margin: 0 auto;
+        }
+
+        .main-s3 .box .left {
+            margin-top: 100px;
+            grid-area: left;
+        }
+
+        .main-s3 .box .left1 {
+            grid-area: left1;
+        }
+
+        .main-s3 .box .right {
+            grid-area: right;
+            margin-top: 10px;
+        }
+
+        .main-s3 .box .right .num {
+            color: #fff;
+            margin: 0 0 -120px -50px;
+        }
+
+        .main-s3 .box .right .ttl {
+            writing-mode: vertical-rl;
+            font-size: clamp(20px, 2vw, 28px);
+            letter-spacing: 0.5em;
+            /* 调整“列”与“列”之间的间距 */
+            line-height: 2;
+            color: #6678AF;
+        }
+
+        .main-s3 .box .right .ttl .shiro {
+            color: #fff;
+            font-weight: 300;
+        }
+
+        .lowered {
+            display: inline-block;
+            vertical-align: top;
+            /* 默认值是baseline，你可以试试 top/bottom 等 */
+            margin-top: 2.5em;
+            /* 向下偏移 */
+        }
+
+        .main-s3 .box .left .img {
+            width: 450px;
+            /* 可以根据需要设置 */
+            height: 250px;
+            /* 宽高由你决定 */
+            overflow: hidden;
+            /* 裁剪多余部分 */
+            position: relative;
+            margin-bottom: 20px;
+            box-shadow: 2px 2px 8px #455175;
+            border-radius: 20px;
+        }
+
+        .main-s3 .box .left .img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* 关键属性：保持比例填充并裁剪多余 */
+            display: block;
+        }
+    }
+
+
+    /* ===================================================
+                    手机端（≤768px）样式
+    =================================================== */
+
+
+    @media (max-width: 768px) {
+        .fade-toggle .txt p {
+            font-size: 15px;
+            line-height: 2em;
+            margin-bottom: 14px;
+        }
+
+        .fade-toggle .img img {
+            border-radius: 10px;
+        }
+
+        main section {
+            box-shadow: 0px 0px 9px #aeaeae;
+        }
+
+        .blue-inner {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0px 0px 9px #aeaeae;
+        }
+
+        .main-s3,
+        .main-s2 {
+            box-shadow: none;
+        }
+
+        .box .num,
+        .main-s1 .left .txt p,
+        .main-s2 .img img,
+        .main-s3 .ttl {
+            display: none;
+        }
+
+        body {
+            background: #d7e0f9;
+        }
+
+        header .ttl {
+            background: #fff;
+            border-radius: 20px;
+            padding: 18px;
+            margin: 16px;
+            box-shadow: 0px 0px 9px #aeaeae;
+        }
+
+        main {
+            padding: 16px;
+        }
+
+        .main-s1 .right .ttl {
+            font-size: 20px;
+            font-weight: 600;
+            color: #222;
+            text-align: center;
+        }
+
+        .main-s1 .right .txt {
+            font-size: 15px;
+            line-height: 2;
+            color: #444;
+        }
+
+        .main-s1 .left .box {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .main-s1 .left .ttl {
+            position: relative;
+            width: 100px;
+            /* 可按需调整大小 */
+            height: 250px;
+            /* 可按需调整大小 */
+            border-radius: 50px;
+            /* 椭圆裁切 */
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .main-s1 .left .ttl img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+
+            transition: filter 0.4s ease;
+            /* 图片滤镜渐变 */
+        }
+
+        .main-s1 .left .ttl p {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0;
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
+            writing-mode: vertical-rl;
+            z-index: 2;
+
+            transition: color 0.4s ease, text-shadow 0.4s ease;
+            /* 文字颜色 & 光晕渐变 */
+        }
+
+        .main-s1 .left .ttl:hover img {
+            filter: brightness(70%);
+        }
+
+        .main-s1 .left .ttl:hover p {
+            color: #fff;
+            text-shadow: 0 0 10px #fff;
+        }
+
+        /* 1. 重置所有可能撑开页面的固定宽度 */
+        .main-s1 .left .txt {
+            min-width: auto;
+            /* 取消 380px 的限制 */
+            width: 100%;
+            /* 改为全宽或根据需求调整 */
+            padding: 0 15px;
+            /* 适当减少内边距 */
+            box-sizing: border-box;
+            /* 确保 padding 不增加总宽度 */
+        }
+
+        .main-s2 {
+            margin: 0;
+        }
+
+        .main-s2 .ttl {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 14px;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .main-s2 .box .txt1 {
+            font-size: 15px;
+            line-height: 2;
+            color: #444;
+            margin-bottom: 0;
+        }
+
+        .main-s3 .left .img {
+            margin-bottom: 14px;
+        }
+
+        .main-s3 .left .img img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .main-s3 .left p {
+            font-size: 15px;
+            line-height: 2;
+            color: #444;
+            margin-bottom: 14px;
+        }
+
+
+        /* 第一条杠：向下旋转 45 度并下移 */
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(9.5px) rotate(45deg);
+        }
+
+        /* 第二条杠：向左滑动并隐藏 */
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        /* 第三条杠：向上旋转 45 度并上移 */
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-9.5px) rotate(-45deg);
+        }
+    }
+</style>
+
+<body>
+    <header id="mainHeader">
+        <div class="nav">
+            <h1 class="LOGO"><a href="../index.html"><img src="../img/imags/LOGO.png" alt=""></a></h1>
+            <!-- 汉堡按钮 -->
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <ul id="navMenu">
+                <li><a href="../index.html">トップ<br><span>TOP</span></a></li>
+                <li><a href="../student-life/index.html">学生の日常<br><span>Student's daily life</span></a></li>
+                <li><a href="../student-interview/index.html">先輩インタビュー<br><span>Senior Interview</span></a></li>
+                <li><a href="../student-growth/index.html">学生の育成<br><span>Student Development</span></a></li>
+            </ul>
+        </div>
+        <!-- 背景遮罩层 -->
+        <div class="menu-overlay" id="menuOverlay"></div>
+
+        <div class="ttl fade-toggle">
+            <div class="txt">
+                <p>伝統的なIT学科のイメージとは異なり、Web学科は単にコードでプログラムを
+                    書くだけで中心の授業ではありません。企画やデザインといった工程も含まれ
+                    ているため、学生のコミュニケーション能力の育成にも力を入れています。
+                </p>
+            </div>
+            <div class="img">
+                <img src="../img/gro/h-bg.jpg" alt="">
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="main-s1 fade-toggle">
+            <div class="right">
+                <div class="box">
+                    <p class="num">01</p>
+                    <p class="ttl">働く力を身に付く</p>
+                    <p class="txt">
+                        専門学校は職業人生の入り口として、専門の知識を詰め込むことも重要ですが、チームの中で自分がどんな役割を担っているのか、また初心者として何ができるのか、どのようにチームに貢献できるのかを理解させることのほうが、むしろ重視されていると言えるでしょう。
+                    </p>
+                </div>
+            </div>
+
+            <div class="left">
+                <div class="txt">
+                    <p>就職成功へ一歩希望の業界へ</p>
+                </div>
+                <div class="box">
+                    <div class="ttl">
+                        <p>技術力</p>
+                        <img src="../img/gro/s1-1.jpg" alt="">
+                    </div>
+                    <div class="ttl">
+                        <p>人間力</p>
+                        <img src="../img/gro/s1-2.jpg" alt="">
+                    </div>
+                    <div class="ttl">
+                        <p>責任感</p>
+                        <img src="../img/gro/s1-3.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="blue">
+            <div class="blue-inner">
+                <section class="main-s2 fade-toggle">
+                    <div class="box">
+                        <p class="ttl"><span>仲間と</span>創る、学びが広がる</p>
+                        <div class="txt">
+                            <p class="num">02</p>
+                            <p class="txt1">まず、学校のグループ活動や大きな課題では、先生が一方的に教えるというより、
+                                先輩と1年生が一緒に取り組むチャンスを作って、お互いのコミュニケーション力
+                                を伸ばすことを大事にしています。<br>
+                                特に留学生にとっては、こういうスタイルの授業が、
+                                日本の社会を知るいいきっかけにもなっています。
+                            </p>
+                        </div>
+                        <div class="img">
+                            <img src="../img/gro/s2.jpg" alt="">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="main-s3 fade-toggle">
+                    <div class="box">
+                        <div class="left1"></div>
+                        <div class="left">
+                            <div class="img">
+                                <img src="../img/gro/s3.jpg" alt="">
+                            </div>
+                            <p>また、学生が自分では解決できない問題に直面した際には、週に2日、
+                                先生が残って質問対応をしてくれる体制も整えられています。
+                                日本語の練習に関することでも、課題についていけないと感じることでも、
+                                それぞれに応じたサポートが学科から受けられます。そして、私たち学生も、
+                                こうした環境の中で少しずつ慣れ、着実に成長していきます。
+                            </p>
+                        </div>
+                        <div class="right">
+                            <p class="num">03</p>
+                            <p class="ttl"><span class="shiro">悩み</span>を一人で抱えない、<br>
+                                <span class="lowered"></span>
+                                心強いサポート
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <section class="footer-nav-box  fade-toggle">
+            <div class="footer-nav">
+                <a href="../student-life/index.html" class="footer-box">
+                    <img src="../img/37.JPG" alt="">
+                    <h4 class="nav-h4">学生の日常</h4>
+                </a>
+                <a href="../student-interview/index.html" class="footer-box">
+                    <img src="../img/12.JPG" alt="">
+                    <h4 class="nav-h4">先輩インタビュー</h4>
+                </a>
+                <a href="../student-growth/index.html" class="footer-box">
+                    <img src="../img/38.JPG" alt="">
+                    <h4 class="nav-h4">学生の育成</h4>
+                </a>
+
+                <a href="#" class="scroll-to-top">
+                    <img class="web" src="../img/imags/top-main-bg2.png" alt="">
+                    <h4>TOPに戻る</h4>
+                </a>
+            </div>
+        </section>
+
+        <section class="footer-bot">
+            <div class="footer-bot-d1">
+                <img src="../img/imags/top-footer-bg.png" alt="">
+                <h3>その第一歩</h3>
+                <p>もしWebデザイン学科に興味があれば、ぜひ学校の公式サイト
+                    もチェックしてみてください。
+                </p>
+            </div>
+
+            <div class="footer-bot-d2">
+                <div class="btn">
+                    <a href="https://www.jec.ac.jp/course/mobile/aw/">Webデザイン科ホームページ</a>
+                    <br>
+                    <a href="https://aw-hotpage.jec.ac.jp/">Webデザイン科NEWS</a>
+                </div>
+                <address>
+                    学校法人電子学園 学生募集部（入学相談室）<br>
+                    TEL:03-3363-2985<br>
+                    FAX:03-3363-7107<br>
+                    E-Mail:jp@jec.ac.jp<br>
+                    サイト: <a href="https://www.jec.ac.jp/">https://www.jec.ac.jp/</a>
+                </address>
+            </div>
+            <small>Copyright © HE XIN</small>
+        </section>
+    </footer>
+    <script>
+
+    </script>
+</body>
+
+</html>
